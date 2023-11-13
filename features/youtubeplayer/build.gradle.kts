@@ -10,4 +10,5 @@ android {
 dependencies {
     commonMainImplementation(libs.io.github.kevinnzou.webview)
     commonMainImplementation(libs.org.jetbrains.kotlinx.serialization.json)
+    commonMainImplementation(libs.com.chrynan.uri.core)
 }

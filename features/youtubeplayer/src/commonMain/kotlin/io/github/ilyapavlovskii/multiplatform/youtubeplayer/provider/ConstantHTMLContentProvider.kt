@@ -2,8 +2,7 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider
 
 internal class ConstantHTMLContentProvider : HTMLContentProvider {
 
-    override fun provideHTMLContent(): String = HTML_CONTENT
-        //.trimIndent()
+    override fun provideHTMLContent(): String = HTML_CONTENT.trimIndent()
 
     private companion object {
         const val HTML_CONTENT = """
@@ -44,7 +43,7 @@ var timerId;
 
 function onYouTubeIframeAPIReady() {
 
-  window.location.href = 'ytplayer://onYouTubeIframeAPIReady';
+  document.title = 'ytplayer://onYouTubeIframeAPIReady';
 
     player = new YT.Player('youTubePlayerDOM', {
 
@@ -53,19 +52,19 @@ function onYouTubeIframeAPIReady() {
     
     events: {
         onReady: function(event) {
-             window.location.href = 'ytplayer://onReady';
+             document.title = 'ytplayer://onReady';
         },
         onStateChange: function(event) {
             sendPlayerStateChange(event.data);
         },
         onPlaybackQualityChange: function(event) {
-            window.location.href = 'ytplayer://onPlaybackQualityChange?data='+event.data;
+            document.title = 'ytplayer://onPlaybackQualityChange?data='+event.data;
         },
         onPlaybackRateChange: function(event) {
-            window.location.href = 'ytplayer://sendPlaybackRateChange?data='+event.data;
+            document.title = 'ytplayer://onPlaybackRateChange?data='+event.data;
         },
         onError: function(error) {
-            window.location.href = 'ytplayer://sendError?data='+event.data;
+            document.title = 'ytplayer://onError?data='+event.data;
         }
       },
       playerVars: <<injectedPlayerVars>>,
@@ -107,7 +106,7 @@ function sendPlayerStateChange(playerState) {
 
   function sendVideoData(player) {
     var videoDuration = player.getDuration();
-    window.location.href = 'ytplayer://sendVideoDuration?videoDuration='+videoDuration;
+    document.title = 'ytplayer://onVideoDuration?data='+videoDuration;
   }
 
   function sendVideoIdFromPlaylistIfAvailable(player) {
@@ -115,17 +114,17 @@ function sendPlayerStateChange(playerState) {
     if ( typeof playlist !== 'undefined' && Array.isArray(playlist) && playlist.length > 0 ) {
       var index = player.getPlaylistIndex();
       var videoId = playlist[index];
-      window.location.href = 'ytplayer://sendVideoId?data='+videoId;
+      // document.title = 'ytplayer://sendVideoId?data='+videoId;
     }
   }
 
   function sendStateChange(newState) {
-    window.location.href = 'ytplayer://onStateChange?data='+newState;
+    document.title = 'ytplayer://onStateChange?data='+newState;
   }
 
   function startSendCurrentTimeInterval() {
     timerId = setInterval(function() {
-        window.location.href = 'ytplayer://sendStateChange?data='+player.getCurrentTime();
+        document.title = 'ytplayer://onCurrentTimeChange?data='+player.getCurrentTime();
     }, 100 );
   }
 }
@@ -140,17 +139,14 @@ function pauseVideo() {
 
 function playVideo() {
   player.playVideo();
-  return "CONFIRMED";
 }
 
 function loadVideo(videoId, startSeconds) {
   player.loadVideoById(videoId, startSeconds);
-  window.location.href = 'ytplayer://sendVideoId?data='+videoId;
 }
 
 function cueVideo(videoId, startSeconds) {
   player.cueVideoById(videoId, startSeconds);
-  window.location.href = 'ytplayer://cueVideo?data='+videoId;
 }
 
 function mute() {
