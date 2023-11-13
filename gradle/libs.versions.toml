@@ -2,7 +2,7 @@
 android-versionCode = "1"
 android-versionName = "1.0.0"
 android-compileSdk = "34"
-android-minSdk = "21"
+android-minSdk = "24"
 android-targetSdk = "34"
 agp = "8.3.0-alpha12"
 kotlin = "1.9.20"
@@ -21,7 +21,7 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 org-jetbrains-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
-io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.6.0"
+io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.7.0"
 
 # plugin dependencies
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

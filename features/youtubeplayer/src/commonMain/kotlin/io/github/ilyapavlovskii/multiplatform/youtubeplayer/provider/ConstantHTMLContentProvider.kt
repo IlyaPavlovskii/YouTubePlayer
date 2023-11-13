@@ -2,33 +2,34 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider
 
 internal class ConstantHTMLContentProvider : HTMLContentProvider {
 
-    override fun provideHTMLContent(): String = HTML_CONTENT.trimIndent()
+    override fun provideHTMLContent(): String = HTML_CONTENT
+        //.trimIndent()
 
     private companion object {
         const val HTML_CONTENT = """
 <!DOCTYPE html>
 <html>
-  <style type="text/css">
-        html, body {
-            height: 100%;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            overflow: hidden;
-            position: fixed;
-        }
-    </style>
+<style type="text/css">
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #000000;
+        overflow: hidden;
+        position: fixed;
+    }
+</style>
 
-  <head>
-    <meta name="robots" content="noindex">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script defer src="https://www.youtube.com/iframe_api"></script>
-  </head>
+<head>
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script defer src="https://www.youtube.com/iframe_api"></script>
+</head>
 
-  <body>
-    <div id="youTubePlayerDOM"></div>
-  </body>
+<body>
+<div id="youTubePlayerDOM"></div>
+</body>
 
   <script type="text/javascript">
 var UNSTARTED = "UNSTARTED";
@@ -139,6 +140,7 @@ function pauseVideo() {
 
 function playVideo() {
   player.playVideo();
+  return "CONFIRMED";
 }
 
 function loadVideo(videoId, startSeconds) {

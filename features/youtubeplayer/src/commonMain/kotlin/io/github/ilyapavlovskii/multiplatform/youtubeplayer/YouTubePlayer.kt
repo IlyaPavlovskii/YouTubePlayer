@@ -24,7 +24,11 @@ fun YouTubePlayer(
     val htmlContent: String = htmlContentProvider.provideHTMLContent()
         .replace(PLAYER_VARS_KEY, options.build())
 
-    val webViewState = rememberWebViewStateWithHTMLData(data = htmlContent)
+    val webViewState = rememberWebViewStateWithHTMLData(
+        data = htmlContent,
+        baseUrl = "https://www.youtube.com",
+
+    )
     val navigator = rememberWebViewNavigator()
 
     webViewState.webSettings.apply {
@@ -32,18 +36,22 @@ fun YouTubePlayer(
         androidWebSettings.apply {
             isAlgorithmicDarkeningAllowed = true
             safeBrowsingEnabled = true
+            domStorageEnabled = true
         }
     }
 
-    Column(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        WebView(
-            modifier = modifier.fillMaxSize(),
-            state = webViewState,
-            navigator = navigator,
-            captureBackPresses = false,
-        )
+    val text = webViewState.let {
+        "Title: ${it.pageTitle ?: ""} " +
+        "State: ${it.loadingState} " +
+        "URL: ${it.lastLoadedUrl.orEmpty()}"
     }
 
+    println("webViewState: $text")
+    println("webViewState. ERROR: ${webViewState.errorsForCurrentRequest.toList()}")
+
+    WebView(
+        modifier = modifier.fillMaxSize(),
+        state = webViewState,
+        navigator = navigator,
+    )
 }
