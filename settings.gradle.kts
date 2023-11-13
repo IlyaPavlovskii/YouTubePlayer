@@ -21,3 +21,4 @@ includeBuild("build-logic")
 
 include(":androidApp")
 include(":sample")
+include(":features:youtubeplayer")
