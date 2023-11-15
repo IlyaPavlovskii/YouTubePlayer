@@ -58,7 +58,9 @@
             onError: function(error) {
                 document.title = 'ytplayer://onError?data='+event.data;
             }
-          }
+          },
+
+         playerVars: {"autoplay":1,"controls":1,"cc_load_policy":0,"fs":0,"iv_load_policy":0,"rel":1,"enablejsapi":1,"mute":0,"playsinline":1,"origin":"https://www.youtube.com","showinfo":0,"modestbranding":1,"cc_lang_pref":null,"list":null,"listType":null}
       });
     }
 

@@ -13,6 +13,7 @@ interface YouTubePlayerOptionsBuilder {
     var langPref: String?
     var list: String?
     var listType: ListType?
+    var playsinline: Boolean
 
     /**
      * This parameter specifies whether the initial video will automatically start to play when
@@ -141,6 +142,18 @@ interface YouTubePlayerOptionsBuilder {
      * */
     fun mute(mute: Boolean): YouTubePlayerOptionsBuilder {
         this.mute = mute
+        return this
+    }
+
+    /**
+     * This parameter controls whether videos play inline or fullscreen on iOS. Valid values are:
+     * False: Results in fullscreen playback. This is currently the default value, though the
+     * default is subject to change.
+     * True: Results in inline playback for mobile browsers and for WebViews created with
+     * the allowsInlineMediaPlayback property set to YES.
+     * */
+    fun playsinline(playsinline: Boolean): YouTubePlayerOptionsBuilder {
+        this.playsinline = playsinline
         return this
     }
 

@@ -18,6 +18,7 @@ class SimpleYouTubePlayerOptionsBuilder : YouTubePlayerOptionsBuilder {
     override var langPref: String? = null
     override var list: String? = null
     override var listType: ListType? = null
+    override var playsinline: Boolean = true
 
     override fun build(): String = json.encodeToString<Params>(createParams())
 
@@ -33,6 +34,7 @@ class SimpleYouTubePlayerOptionsBuilder : YouTubePlayerOptionsBuilder {
         listType = this.listType?.type,
         jsApi = if(this.jsApiEnabled) 1 else 0,
         mute = if(this.mute) 1 else 0,
+        playsinline = if(this.playsinline) 1 else 0,
     )
 
     companion object {
@@ -47,6 +49,10 @@ class SimpleYouTubePlayerOptionsBuilder : YouTubePlayerOptionsBuilder {
         private const val LIST = "list"
         private const val LIST_TYPE = "listType"
         private const val MUTE = "mute"
+        private const val PLAYS_INLINE = "playsinline"
+        private const val ORIGIN = "origin"
+        private const val SHOW_INFO = "showinfo"
+        private const val MODEST_BRANDING = "modestbranding"
 
         private val json by lazy { Json { encodeDefaults = true } }
 
@@ -64,17 +70,28 @@ class SimpleYouTubePlayerOptionsBuilder : YouTubePlayerOptionsBuilder {
             val ivLoadPolicy: Int = 0,
             @SerialName(REL)
             val rel: Int = 1,
+            @SerialName(ENABLE_JS_API)
+            val jsApi: Int = 1,
+            @SerialName(MUTE)
+            val mute: Int = 0,
+            @SerialName(PLAYS_INLINE)
+            val playsinline: Int = 1,
+
+            @SerialName(ORIGIN)
+            val origin: String = "https://www.youtube.com",
+            @SerialName(SHOW_INFO)
+            val showInfo: Int = 0,
+            @SerialName(MODEST_BRANDING)
+            val modestBranding: Int = 1,
+
             @SerialName(CC_LANG_PREF)
             val langPref: String? = null,
             @SerialName(LIST)
             val list: String? = null,
             @SerialName(LIST_TYPE)
             val listType: String? = null,
-            @SerialName(ENABLE_JS_API)
-            val jsApi: Int = 1,
-            @SerialName(MUTE)
-            val mute: Int = 0,
         )
+
         fun builder(
             init: YouTubePlayerOptionsBuilder.() -> Unit
         ): YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder().apply(init)

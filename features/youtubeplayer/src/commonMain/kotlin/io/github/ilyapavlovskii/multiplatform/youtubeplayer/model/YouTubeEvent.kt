@@ -1,14 +1,15 @@
 package io.github.ilyapavlovskii.multiplatform.youtubeplayer.model
 
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-sealed class YouTubeAction {
-    data object Ready : YouTubeAction()
+sealed class YouTubeEvent {
+    data object Ready : YouTubeEvent()
     data class PlaybackQualityChange(
         val quality: Quality
-    ) : YouTubeAction() {
+    ) : YouTubeEvent() {
         enum class Quality(val value: String) {
             SMALL("small"),
             MEDIUM("medium"),
@@ -28,7 +29,7 @@ sealed class YouTubeAction {
 
     data class RateChange(
         val rate: Float,
-    ) : YouTubeAction() {
+    ) : YouTubeEvent() {
         companion object {
             fun fromStringOrNull(value: String): RateChange? =
                 value.toFloatOrNull()?.let(::RateChange)
@@ -37,11 +38,11 @@ sealed class YouTubeAction {
 
     data class Error(
         val error: String,
-    ) : YouTubeAction()
+    ) : YouTubeEvent()
 
     data class VideoDuration(
         val duration: Duration,
-    ) : YouTubeAction() {
+    ) : YouTubeEvent() {
         companion object {
             fun fromStringOrNull(value: String): VideoDuration? = value
                 .toDoubleOrNull()
@@ -52,7 +53,7 @@ sealed class YouTubeAction {
 
     data class StateChanged(
         val state: State,
-    ): YouTubeAction() {
+    ): YouTubeEvent() {
         enum class State(val value: String) {
             UNSTARTED("UNSTARTED"),
             ENDED("ENDED"),
@@ -71,7 +72,7 @@ sealed class YouTubeAction {
 
     data class TimeChanged(
         val time: Duration,
-    ): YouTubeAction() {
+    ): YouTubeEvent() {
         companion object {
             fun fromStringOrNull(value: String): TimeChanged? = value
                 .toDoubleOrNull()
@@ -80,11 +81,21 @@ sealed class YouTubeAction {
         }
     }
 
+    data class OnVideoIdHandled(
+        val videoId: YouTubeVideoId,
+    ) : YouTubeEvent() {
+        companion object {
+            fun fromStringOrNull(value: String?): OnVideoIdHandled? = value
+                ?.let(::YouTubeVideoId)
+                ?.let(::OnVideoIdHandled)
+        }
+    }
+
     companion object {
         internal fun fromStringOrNull(
             operation: YouTubeOperation?,
             data: String
-        ): YouTubeAction? = when (operation) {
+        ): YouTubeEvent? = when (operation) {
             YouTubeOperation.READY -> Ready
             YouTubeOperation.PLAYBACK_QUALITY_CHANGE -> PlaybackQualityChange.fromStringOrNull(data)
             YouTubeOperation.RATE_CHANGE -> RateChange.fromStringOrNull(data)
@@ -92,6 +103,7 @@ sealed class YouTubeAction {
             YouTubeOperation.VIDEO_DURATION -> VideoDuration.fromStringOrNull(data)
             YouTubeOperation.STATE_CHANGE -> StateChanged.fromStringOrNull(data)
             YouTubeOperation.CURRENT_TIME_CHANGE -> TimeChanged.fromStringOrNull(data)
+            YouTubeOperation.ON_VIDEO_ID_HANDLED -> OnVideoIdHandled.fromStringOrNull(data)
             null -> null
         }
     }

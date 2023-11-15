@@ -9,28 +9,30 @@ internal class ConstantHTMLContentProvider : HTMLContentProvider {
 <!DOCTYPE html>
 <html>
 <style type="text/css">
-    html, body {
-        height: 100%;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: #000000;
-        overflow: hidden;
-        position: fixed;
-    }
-</style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            overflow: hidden;
+            position: fixed;
+        }
+    </style>
 
-<head>
-<meta name="robots" content="noindex">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<script defer src="https://www.youtube.com/iframe_api"></script>
-</head>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- defer forces the library to execute after the html page is fully parsed. -->
+    <!-- This is needed to avoid race conditions, where the library executes and calls `onYouTubeIframeAPIReady` before the page is fully parsed. -->
+    <!-- See #873 on GitHub -->
+    <script defer src="https://www.youtube.com/iframe_api"></script>
+  </head>
 
-<body>
-<div id="youTubePlayerDOM"></div>
-</body>
+  <body>
+    <div id="youTubePlayerDOM"></div>
+  </body>
 
-  <script type="text/javascript">
+<script type="text/javascript">
 var UNSTARTED = "UNSTARTED";
 var ENDED = "ENDED";
 var PLAYING = "PLAYING";
@@ -40,6 +42,10 @@ var CUED = "CUED";
 
 var player;
 var timerId;
+
+Object.defineProperty(navigator, 'userAgent', {
+    get: function () { return 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'; }
+});
 
 function onYouTubeIframeAPIReady() {
 
@@ -67,7 +73,8 @@ function onYouTubeIframeAPIReady() {
             document.title = 'ytplayer://onError?data='+event.data;
         }
       },
-      playerVars: <<injectedPlayerVars>>,
+      
+      playerVars: <<injectedPlayerVars>>
   });
 }
 
@@ -114,7 +121,7 @@ function sendPlayerStateChange(playerState) {
     if ( typeof playlist !== 'undefined' && Array.isArray(playlist) && playlist.length > 0 ) {
       var index = player.getPlaylistIndex();
       var videoId = playlist[index];
-      // document.title = 'ytplayer://sendVideoId?data='+videoId;
+       document.title = 'ytplayer://onVideoId?data='+videoId;
     }
   }
 
@@ -131,6 +138,11 @@ function sendPlayerStateChange(playerState) {
 
 function seekTo(startSeconds) {
   player.seekTo(startSeconds, true);
+  document.title = 'ytplayer://onCurrentTimeChange?data='+startSeconds;
+}
+
+function seekBy(startSeconds) {
+  seekTo(player.getCurrentTime()+startSeconds);
 }
 
 function pauseVideo() {
@@ -143,10 +155,12 @@ function playVideo() {
 
 function loadVideo(videoId, startSeconds) {
   player.loadVideoById(videoId, startSeconds);
+  document.title = 'ytplayer://onVideoId?data='+videoId;
 }
 
 function cueVideo(videoId, startSeconds) {
   player.cueVideoById(videoId, startSeconds);
+  document.title = 'ytplayer://onVideoId?data='+videoId;
 }
 
 function mute() {

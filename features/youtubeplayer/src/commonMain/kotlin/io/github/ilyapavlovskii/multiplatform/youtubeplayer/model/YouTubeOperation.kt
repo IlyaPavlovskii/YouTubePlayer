@@ -7,7 +7,8 @@ internal enum class YouTubeOperation(val operationName: String) {
     ERROR("onError"),
     VIDEO_DURATION("onVideoDuration"),
     STATE_CHANGE("onStateChange"),
-    CURRENT_TIME_CHANGE("onCurrentTimeChange")
+    CURRENT_TIME_CHANGE("onCurrentTimeChange"),
+    ON_VIDEO_ID_HANDLED("onVideoId")
     ;
 
     companion object {
