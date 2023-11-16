@@ -109,11 +109,11 @@ private fun YouTubePlayerExecutor(
     execCommand: YouTubeExecCommand? = null,
 ) {
     LaunchedEffect(execCommand) {
-        execCommand?.also { command ->
-            //navigator.loadUrl("javascript:${command.command()}")
-            navigator.evaluateJavaScript(command.command()) {
-                println("webView. Command: $command Execution result: $it")
-            }
-        }
+        execCommand?.also { command -> executeCommand(navigator, command) }
     }
 }
+
+internal expect fun executeCommand(
+    navigator: WebViewNavigator,
+    execCommand: YouTubeExecCommand,
+)
