@@ -50,7 +50,7 @@ fun App() {
                     when (action) {
                         YouTubeEvent.Ready -> {
                             execCommand.value = YouTubeExecCommand.LoadVideo(
-                                videoId = YouTubeVideoId("GbfeH6Q8PzY"),
+                                videoId = YouTubeVideoId("ufKj1sBrC4Q"),
                             )
                         }
 
@@ -67,9 +67,7 @@ fun App() {
                         is YouTubeEvent.PlaybackQualityChange,
                         is YouTubeEvent.RateChange,
                         is YouTubeEvent.StateChanged,
-                        -> {
-                            println("webViewState. onAction HANDlED: $action")
-                        }
+                        -> println("webViewState. onAction HANDlED: $action")
                     }
                 },
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
@@ -78,7 +76,7 @@ fun App() {
                     rel(false)
                     ivLoadPolicy(false)
                     ccLoadPolicy(false)
-                    //mute(true)
+                    fullscreen = true
                 },
             )
             Row(
@@ -86,27 +84,11 @@ fun App() {
                     .fillMaxWidth()
                     .height(50.dp),
             ) {
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .padding(8.dp),
-                    onClick = {
-                        execCommand.value = YouTubeExecCommand.Play
-                    },
-                ) {
-                    Text(text = "Play")
+                SimpleButton(text = "Play") {
+                    execCommand.value = YouTubeExecCommand.Play
                 }
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .padding(8.dp),
-                    onClick = {
-                        execCommand.value = YouTubeExecCommand.Pause
-                    },
-                ) {
-                    Text(text = "Pause")
+                SimpleButton(text = "Pause") {
+                    execCommand.value = YouTubeExecCommand.Pause
                 }
             }
             Row(
@@ -114,27 +96,23 @@ fun App() {
                     .fillMaxWidth()
                     .height(50.dp),
             ) {
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .padding(8.dp),
-                    onClick = {
-                        execCommand.value = YouTubeExecCommand.SeekBy((-10).seconds)
-                    },
-                ) {
-                    Text(text = "Seek by -10s")
+                SimpleButton(text = "Seek by -10s") {
+                    execCommand.value = YouTubeExecCommand.SeekBy((-10).seconds)
                 }
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .padding(8.dp),
-                    onClick = {
-                        execCommand.value = YouTubeExecCommand.SeekBy(10.seconds)
-                    },
-                ) {
-                    Text(text = "Seek by +10s")
+                SimpleButton(text = "Seek by +10s") {
+                    execCommand.value = YouTubeExecCommand.SeekBy(10.seconds)
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+            ) {
+                SimpleButton(text = "Mute") {
+                    execCommand.value = YouTubeExecCommand.Mute
+                }
+                SimpleButton(text = "Unmute") {
+                    execCommand.value = YouTubeExecCommand.Unmute
                 }
             }
             Row(
