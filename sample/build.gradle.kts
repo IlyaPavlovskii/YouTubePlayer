@@ -8,6 +8,5 @@ android {
 
 dependencies {
     implementation(libs.androidx.ui.tooling.preview.android)
-    //implementation(project(":features:youtubeplayer"))
-    commonMainImplementation(projects.features.youtubeplayer)
+    commonMainImplementation(projects.youtubeplayerCompose)
 }
