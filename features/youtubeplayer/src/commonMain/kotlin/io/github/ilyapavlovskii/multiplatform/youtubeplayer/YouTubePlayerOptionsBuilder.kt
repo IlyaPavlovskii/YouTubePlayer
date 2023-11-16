@@ -1,18 +1,97 @@
 package io.github.ilyapavlovskii.multiplatform.youtubeplayer
 
+/**
+ * YouTube player options builder.
+ * See all parameters [here](https://developers.google.com/youtube/player_parameters#Parameters)
+ * */
 interface YouTubePlayerOptionsBuilder {
 
+    /**
+     * This parameter specifies whether the initial video will automatically start to play when
+     * the player loads. The default value is false.
+     * */
     var autoplay: Boolean
+    /**
+     * This parameter indicates whether the video player controls are displayed
+     * */
     var controls: Boolean
+    /**
+     * Setting the parameter's value to true causes closed captions to be shown by default,
+     * 	even if the user has turned captions off. The default behavior is based on user preference.
+     * */
     var ccLoadPolicy: Boolean
+    /**
+     * Setting this parameter to false prevents the fullscreen button from displaying in the player.
+     * The default value is true, which causes the fullscreen button to display.
+     * */
     var fullscreen: Boolean
+    /**
+     * Setting the parameter's value to true causes video annotations to be shown by default,
+     * whereas setting to false causes video annotations to not be shown by default.
+     *
+     * The default value is true.
+     * */
     var ivLoadPolicy: Boolean
+    /**
+     * Setting the parameter's value to true enables the player to be controlled via IFrame
+     * Player API calls. The default value is false, which means that the player cannot
+     * be controlled using that API.
+     * */
     var jsApiEnabled: Boolean
+    /**
+     * Mute or unmute video
+     * */
     var mute: Boolean
+    /**
+     * Prior to the change, this parameter indicates whether the player should show related
+     * videos when playback of the initial video ends.
+     *
+     * * If the parameter's value is set to true, which is the default value,
+     * then the player does show related videos.
+     * * If the parameter's value is set to false, then the player does not show related videos.
+     *
+     * After the change, you will not be able to disable related videos.
+     * Instead, if the rel parameter is set to false, related videos will come from the same channel as the video that was just played.
+     * */
     var rel: Boolean
+    /**
+     * 	This parameter specifies the default language that the player will use to display captions.
+     * 	Set the parameter's value to an ISO 639-1 two-letter language code.
+     *
+     * If you use this parameter and also set the cc_load_policy parameter to true,
+     * then the player will show captions in the specified language when the player loads.
+     * If you do not also set the cc_load_policy parameter,
+     * then captions will not display by default, but will display in the specified
+     * language if the user opts to turn captions on.
+     * */
     var langPref: String?
+    /**
+     * 	The list parameter, in conjunction with the listType parameter, identifies the content that will load in the player.
+     * If the listType parameter value is user_uploads, then the list parameter value identifies the YouTube channel whose uploaded videos will be loaded.
+     * If the listType parameter value is playlist, then the list parameter value specifies a YouTube playlist ID. In the parameter value, you need to prepend the playlist ID with the letters PL as shown in the example below.
+     *
+     * https://www.youtube.com/embed?
+     *     listType=playlist
+     *     &list=PLC77007E23FF423C6
+     * If the listType parameter value is search, then the list parameter value specifies the search query. Note: This functionality is deprecated and will no longer be supported as of 15 November 2020.
+     * Note: If you specify values for the list and listType parameters, the IFrame embed URL does not need to specify a video ID.
+     * */
     var list: String?
+    /**
+     * 	The listType parameter, in conjunction with the list parameter, identifies the content
+     * 	that will load in the player. Valid parameter values are playlist and user_uploads.
+     *
+     * If you specify values for the list and listType parameters, the IFrame embed
+     * URL does not need to specify a video ID.
+     * */
     var listType: ListType?
+    /**
+     * This parameter controls whether videos play inline or fullscreen on iOS. Valid values are:
+     * False: Results in fullscreen playback. This is currently the default value, though the
+     * default is subject to change.
+     * True: Results in inline playback for mobile browsers and for WebViews created with
+     * the allowsInlineMediaPlayback property set to YES.
+     * */
     var playsinline: Boolean
 
     /**

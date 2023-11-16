@@ -5,11 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import com.multiplatform.webview.web.WebContent
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.WebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewNavigator
@@ -24,44 +21,73 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 
 private const val BASE_URL = "https://www.youtube.com"
+private const val BASE_MIME_TYPE = "text/html"
+private const val BASE_ENCODING = "utf-8"
 private const val PLAYER_VARS_KEY = "<<injectedPlayerVars>>"
 
 private val htmlContentProvider: HTMLContentProvider = ConstantHTMLContentProvider()
 
+/**
+ * YouTube player composable player.
+ *
+ * @param modifier modifier for styling component
+ * @param options player options builder. See [YouTubePlayerOptionsBuilder]
+ * documentation for more details.
+ * @param execCommandFlow flow of commands to execute. See [YouTubeExecCommand]
+ * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
+ * */
 @Composable
 fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
     execCommandFlow: Flow<YouTubeExecCommand?> = emptyFlow(),
-    youTubeActionListener: ((YouTubeEvent) -> Unit)? = null,
+    actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) = YouTubePlayer(
     modifier = modifier,
     options = options,
     execCommandState = execCommandFlow
         .distinctUntilChanged()
         .collectAsState(initial = null),
-    youTubeActionListener = youTubeActionListener,
+    actionListener = actionListener,
 )
 
+/**
+ * YouTube player composable player.
+ *
+ * @param modifier modifier for styling component
+ * @param options player options builder. See [YouTubePlayerOptionsBuilder]
+ * documentation for more details.
+ * @param execCommandState state of commands to execute. See [YouTubeExecCommand]
+ * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
+ * */
 @Composable
 fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
     execCommandState: State<YouTubeExecCommand?>,
-    youTubeActionListener: ((YouTubeEvent) -> Unit)? = null,
+    actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) = YouTubePlayer(
     modifier = modifier,
     options = options,
     execCommand = execCommandState.value,
-    youTubeActionListener = youTubeActionListener,
+    actionListener = actionListener,
 )
 
+/**
+ * YouTube player composable player.
+ *
+ * @param modifier modifier for styling component
+ * @param options player options builder. See [YouTubePlayerOptionsBuilder]
+ * documentation for more details.
+ * @param execCommand command to execute. See [YouTubeExecCommand]
+ * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
+ * */
 @Composable
 fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
     execCommand: YouTubeExecCommand? = null,
-    youTubeActionListener: ((YouTubeEvent) -> Unit)? = null,
+    actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
     val htmlContent: String = remember(options) {
         htmlContentProvider.provideHTMLContent()
@@ -70,8 +96,8 @@ fun YouTubePlayer(
     val webViewState = rememberWebViewStateWithHTMLData(
         data = htmlContent,
         baseUrl = BASE_URL,
-        mimeType = "text/html",
-        encoding = "utf-8",
+        mimeType = BASE_MIME_TYPE,
+        encoding = BASE_ENCODING,
     )
 
     val navigator = rememberWebViewNavigator()
@@ -90,7 +116,7 @@ fun YouTubePlayer(
         execCommand = execCommand,
     )
 
-    youTubeActionListener?.also { safeListener ->
+    actionListener?.also { safeListener ->
         val action = YouTubeActionHandler.handleAction(webViewState.pageTitle)
         if (action != null) {
             safeListener(action)
