@@ -14,6 +14,14 @@ sealed interface YouTubeExecCommand {
             "loadVideo(\'${videoId.id}\', ${startSeconds.inWholeSeconds});"
     }
 
+    data class CueVideo(
+        val videoId: YouTubeVideoId,
+        val startSeconds: Duration = Duration.ZERO,
+    ) : YouTubeExecCommand {
+        override fun command(): String =
+            "cueVideo(\'${videoId.id}\', ${startSeconds.inWholeSeconds});"
+    }
+
     data object Play : YouTubeExecCommand {
         override fun command(): String = "playVideo();"
     }
@@ -28,14 +36,6 @@ sealed interface YouTubeExecCommand {
 
     data class SeekBy(val duration: Duration): YouTubeExecCommand {
         override fun command(): String = "seekBy(${duration.inWholeSeconds});"
-    }
-
-    data class CueVideo(
-        val videoId: YouTubeVideoId,
-        val startSeconds: Duration = Duration.ZERO,
-    ) : YouTubeExecCommand {
-        override fun command(): String =
-            "cueVideo(\'${videoId.id}\', ${startSeconds.inWholeSeconds});"
     }
 
     data object Mute : YouTubeExecCommand {

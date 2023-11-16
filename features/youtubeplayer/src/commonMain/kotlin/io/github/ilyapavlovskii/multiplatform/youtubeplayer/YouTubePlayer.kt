@@ -70,6 +70,8 @@ fun YouTubePlayer(
     val webViewState = rememberWebViewStateWithHTMLData(
         data = htmlContent,
         baseUrl = BASE_URL,
+        mimeType = "text/html",
+        encoding = "utf-8",
     )
 
     val navigator = rememberWebViewNavigator()
@@ -108,6 +110,7 @@ private fun YouTubePlayerExecutor(
 ) {
     LaunchedEffect(execCommand) {
         execCommand?.also { command ->
+            //navigator.loadUrl("javascript:${command.command()}")
             navigator.evaluateJavaScript(command.command()) {
                 println("webView. Command: $command Execution result: $it")
             }

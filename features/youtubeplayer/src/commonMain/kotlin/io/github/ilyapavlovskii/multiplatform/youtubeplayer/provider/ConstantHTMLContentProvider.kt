@@ -43,10 +43,6 @@ var CUED = "CUED";
 var player;
 var timerId;
 
-Object.defineProperty(navigator, 'userAgent', {
-    get: function () { return 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'; }
-});
-
 function onYouTubeIframeAPIReady() {
 
   document.title = 'ytplayer://onYouTubeIframeAPIReady';
