@@ -31,6 +31,7 @@ kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 toolsGradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.5.10" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
+com-vanniktech-gradle-maven-publish-plugin = "com.vanniktech:gradle-maven-publish-plugin:0.25.3"
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

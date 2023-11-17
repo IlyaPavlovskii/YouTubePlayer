@@ -6,3 +6,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.kotlinSerialization).apply(false)
 }
+
+subprojects {
+    group = "io.github.ilyapavlovskii"
+    version = "2023.11.16"
+}
