@@ -120,6 +120,9 @@ Composable function has the next major params:
 * `TimeChanged(val time: Duration)` - timestamp changed
 * `OnVideoIdHandled(val videoId: YouTubeVideoId)` - callback when video loaded
 
+# Sample
+![Sample](sample.png)
+
 # LICENSE
 
 ```
