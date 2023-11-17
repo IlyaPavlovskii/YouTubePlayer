@@ -1,12 +1,21 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.vanniktech.maven.publish.SonatypeHost
+
+
 plugins {
     id("com.vanniktech.maven.publish")
 }
 
-project.version = project.version.toString()
+val versionSuffix = when (System.getenv("RELEASE")) {
+    "true" -> ""
+    else -> "-SNAPSHOT"
+}
+project.version = project.version.toString() + versionSuffix
 
 mavenPublishing {
+    publishToMavenCentral(SonatypeHost.S01)
+
     coordinates(
         groupId = project.group.toString(),
         artifactId = project.name,
@@ -18,6 +27,7 @@ mavenPublishing {
         description.set("The `YouTubePlayer` composable allows you to embed a YouTube video player in your Jetpack Compose app.")
         inceptionYear.set("2023")
         url.set("https://github.com/IlyaPavlovskii/YouTubePlayer")
+
         licenses {
             license {
                 name.set("Apache 2.0 License")
@@ -38,4 +48,7 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://github.com/IlyaPavlovskii/YouTubePlayer.git")
         }
     }
+    // https://github.com/vanniktech/gradle-maven-publish-plugin/blob/46c85b2a306d3a3cd675f26d4b4176ad3ea477a1/docs/central.md
+    signAllPublications()
+
 }

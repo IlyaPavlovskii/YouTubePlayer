@@ -1,7 +1,49 @@
 # YouTubePlayer
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ilyapavlovskii/youtubeplayer.svg)](https://search.maven.org/artifact/io.github.ilyapavlovskii/youtubeplayer)
+[![Kotlin](https://img.shields.io/badge/kotlin-v1.9.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.5.4-blue)](https://github.com/JetBrains/compose-multiplatform)
+
+![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
+![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
+
 YouTube kotlin multiplatform player.
 The `YouTubePlayer` composable allows you to embed a YouTube video player in your Jetpack Compose app.
+
+## Donate
+If you want to thank me or contribute to the development of the backlog, you may donate me. That helps me to concentrate more on the project.
+
+[!["PayPal"](https://raw.githubusercontent.com/IlyaPavlovskii/IlyaPavlovskii/main/resources/paypal.svg)](https://www.paypal.com/paypalme/ipavlovskii)
+[!["Buy Me A Coffee"](https://raw.githubusercontent.com/IlyaPavlovskii/IlyaPavlovskii/main/resources/buy_me_a_coffee.svg)](https://www.buymeacoffee.com/ipavlovskii)
+
+You also might subscribe me on the next platforms to see any updates of my topics
+
+[![medium](https://raw.githubusercontent.com/IlyaPavlovskii/IlyaPavlovskii/main/resources/medium.svg)](https://pavlovskiiilia.medium.com/)
+[![habr](https://raw.githubusercontent.com/IlyaPavlovskii/IlyaPavlovskii/main/resources/habr.svg)](https://habr.com/ru/users/TranE91/posts/)
+
+# Install
+You can add this library to your project using Gradle.
+
+Multiplatform
+To add to a multiplatform project, add the dependency to the common source-set:
+
+```gradle
+repositories {
+    mavenCentral()
+    maven("https://repo.repsy.io/mvn/chrynan/public")
+    maven("https://s01.oss.sonatype.org/content/repositories/iogithubilyapavlovskii-1011/")
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation("io.github.ilyapavlovskii:youtubeplayer-compose:${latest_version}")
+            }
+        }
+    }
+}
+```
 
 # Usage
 
