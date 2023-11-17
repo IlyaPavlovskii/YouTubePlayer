@@ -46,7 +46,7 @@ fun App() {
                     .height(300.dp)
                     .gesturesDisabled(),
                 execCommandState = execCommand,
-                youTubeActionListener = { action ->
+                actionListener = { action ->
                     when (action) {
                         YouTubeEvent.Ready -> {
                             execCommand.value = YouTubeExecCommand.LoadVideo(
