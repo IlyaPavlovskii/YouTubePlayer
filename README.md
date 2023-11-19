@@ -31,7 +31,6 @@ To add to a multiplatform project, add the dependency to the common source-set:
 repositories {
     mavenCentral()
     maven("https://repo.repsy.io/mvn/chrynan/public")
-    maven("https://s01.oss.sonatype.org/content/repositories/iogithubilyapavlovskii-1011/")
 }
 
 kotlin {
