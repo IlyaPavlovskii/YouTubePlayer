@@ -1,6 +1,6 @@
 # YouTubePlayer
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.ilyapavlovskii/youtubeplayer.svg)](https://search.maven.org/artifact/io.github.ilyapavlovskii/youtubeplayer)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ilyapavlovskii/youtubeplayer-compose.svg)](https://search.maven.org/artifact/io.github.ilyapavlovskii/youtubeplayer)
 [![Kotlin](https://img.shields.io/badge/kotlin-v1.9.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.5.4-blue)](https://github.com/JetBrains/compose-multiplatform)
 
