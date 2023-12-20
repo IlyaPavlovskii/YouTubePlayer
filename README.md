@@ -30,7 +30,6 @@ To add to a multiplatform project, add the dependency to the common source-set:
 ```gradle
 repositories {
     mavenCentral()
-    maven("https://repo.repsy.io/mvn/chrynan/public")
 }
 
 kotlin {

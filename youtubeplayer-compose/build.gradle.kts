@@ -12,5 +12,4 @@ dependencies {
     commonMainImplementation(libs.io.github.kevinnzou.webview)
     commonMainImplementation(libs.org.jetbrains.kotlinx.serialization.json)
     commonMainImplementation(libs.org.jetbrains.kotlinx.datetime)
-    commonMainImplementation(libs.com.chrynan.uri.core)
 }
