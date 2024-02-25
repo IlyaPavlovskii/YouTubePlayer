@@ -46,42 +46,37 @@ kotlin {
 # Usage
 
 ```kotlin
-val execCommand = mutableStateOf<YouTubeExecCommand?>(null)
+val coroutineScope = rememberCoroutineScope()
+val hostState = remember { YouTubePlayerHostState() }
+
+when(val state = hostState.currentState) {
+    is YouTubePlayerState.Error -> {
+        Text(text = "Error: ${state.message}")
+    }
+    YouTubePlayerState.Idle -> {
+        // Do nothing, waiting for initialization
+    }
+    is YouTubePlayerState.Playing -> {
+        // Update UI button states
+    }
+    YouTubePlayerState.Ready -> coroutineScope.launch {
+        hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
+    }
+}
+
 YouTubePlayer(
     modifier = Modifier
         .fillMaxWidth()
-        .height(300.dp),
+        .height(300.dp)
+        .gesturesDisabled(),
+    hostState = hostState,
     options = SimpleYouTubePlayerOptionsBuilder.builder {
-        autoplay(true) // autoplay = true 
-        controls(false).rel(false) // controls = false, rel = false
+        autoplay(true)
+        controls(false)
+        rel(false)
         ivLoadPolicy(false)
         ccLoadPolicy(false)
         fullscreen = true
-    },
-    execCommandState = execCommand,
-    actionListener = { action ->
-        when (action) {
-            YouTubeEvent.Ready -> {
-                execCommand.value = YouTubeExecCommand.LoadVideo(
-                    videoId = YouTubeVideoId("ufKj1sBrC4Q"),
-                )
-            }
-
-            is YouTubeEvent.VideoDuration -> {
-                videoDuration = formatTime(action.duration)
-            }
-
-            is YouTubeEvent.TimeChanged -> {
-                currentTime = formatTime(action.time)
-            }
-
-            is YouTubeEvent.OnVideoIdHandled,
-            is YouTubeEvent.Error,
-            is YouTubeEvent.PlaybackQualityChange,
-            is YouTubeEvent.RateChange,
-            is YouTubeEvent.StateChanged,
-            -> println("webViewState. onAction HANDlED: $action")
-        }
     },
 )
 ```
@@ -89,8 +84,39 @@ YouTubePlayer(
 Composable function has the next major params:
 
 * `options` - to player options builder. All parameters wrapped from [official youtube iframe documentation](https://developers.google.com/youtube/player_parameters#Parameters).
-* `executeCommand/executeCommandFlow/executeCommandState` - [player command](#YouTubeExecCommand) to manage some actions of the YouTubePlayer. 
-* `listener` - listener for YouTube events. Description [here](#YouTubeEvent)
+* `hostState` - controller for track youtube player state and execute one time commands
+
+### YouTubePlayerHostState
+The main controller. Contains 2 major public components:
+* currentState - defines actual youtube player state on the screen. Might be: Idle, Ready, Playing, Error
+* executeCommand - suspend function to execution player commands. Receives only one argument - <a name="YouTubeExecCommand">YouTubeExecCommand</a>. Also have an additional sugar functions like:
+```kotlin
+suspend fun loadVideo(videoId: YouTubeVideoId) = executeCommand(YouTubeExecCommand.LoadVideo(videoId))
+suspend fun play() = executeCommand(YouTubeExecCommand.Play)
+suspend fun pause() = executeCommand(YouTubeExecCommand.Pause)
+suspend fun seekTo(duration: Duration) = executeCommand(YouTubeExecCommand.SeekTo(duration))
+suspend fun seekBy(duration: Duration) = executeCommand(YouTubeExecCommand.SeekBy(duration))
+suspend fun mute() = executeCommand(YouTubeExecCommand.Mute)
+suspend fun unMute() = executeCommand(YouTubeExecCommand.Unmute)
+suspend fun setVolume(volume: Int) = executeCommand(YouTubeExecCommand.SetVolume(volume))
+suspend fun setPlaybackRate(rate: Float) = executeCommand(YouTubeExecCommand.SetPlaybackRate(rate))
+suspend fun toggleFullScreen() = executeCommand(YouTubeExecCommand.ToggleFullscreen)
+```
+
+### <a name="YouTubePlayerState">YouTubePlayerState</a>
+YouTube player state defines actual youtube player state on the screen. Contains the next possible states:
+* `Idle` - Idle state means that player is not initialized yet
+* `Ready` - Means that player is ready to play
+* `Playing` - player is playing video. Contains the next params:  
+```kotlin
+videoId: YouTubeVideoId - id of the video that is playing
+duration: Duration - duration of the video
+currentTime: Duration - current time of the video
+quality: YouTubeEvent.PlaybackQualityChange.Quality - quality of the video, see [YouTubeEvent.PlaybackQualityChange.Quality]
+isPlaying: Boolean - is video playing
+```
+* `Error` - Defines error state with error message inside.
+
 
 ### <a name="YouTubeExecCommand">YouTubeExecCommand</a>
 
