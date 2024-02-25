@@ -36,6 +36,7 @@ fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
     hostState: YouTubePlayerHostState,
+    actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
     val htmlContent: String = remember(options) {
         htmlContentProvider.provideHTMLContent()
@@ -69,6 +70,7 @@ fun YouTubePlayer(
 
     YouTubeActionHandler.handleAction(webViewState.pageTitle)?.also { event ->
         hostState.updateState(event)
+        actionListener?.invoke(event)
     }
 
     WebView(

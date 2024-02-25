@@ -13,9 +13,27 @@ import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.resume
 import kotlin.time.Duration
 
+/**
+ * YouTube player state defines actual youtube player state on the screen
+ * */
 sealed class YouTubePlayerState {
+    /**
+     * Idle state means that player is not initialized yet
+     * */
     data object Idle : YouTubePlayerState()
+    /**
+     * Means that player is ready to play
+     * */
     data object Ready : YouTubePlayerState()
+    /**
+     * Means that player is playing video.
+     *
+     * @param videoId - id of the video that is playing
+     * @param duration - duration of the video
+     * @param currentTime - current time of the video
+     * @param quality - quality of the video, see [YouTubeEvent.PlaybackQualityChange.Quality]
+     * @param isPlaying - is video playing
+     * */
     data class Playing(
         val videoId: YouTubeVideoId,
         val duration: Duration = Duration.ZERO,
@@ -25,6 +43,9 @@ sealed class YouTubePlayerState {
         val isPlaying: Boolean = false,
     ) : YouTubePlayerState()
 
+    /**
+     * Defines error state
+     * */
     data class Error(
         val message: String,
     ) : YouTubePlayerState()
