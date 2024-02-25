@@ -25,7 +25,7 @@ mavenPublishing {
     pom {
         name.set("YouTubePlayer")
         description.set("The `YouTubePlayer` composable allows you to embed a YouTube video player in your Jetpack Compose app.")
-        inceptionYear.set("2023")
+        inceptionYear.set("2024")
         url.set("https://github.com/IlyaPavlovskii/YouTubePlayer")
 
         licenses {
