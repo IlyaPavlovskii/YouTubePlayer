@@ -3,8 +3,6 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.multiplatform.webview.web.WebView
@@ -16,9 +14,6 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.ConstantHTMLContentProvider
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.HTMLContentProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
 
 private const val BASE_URL = "https://www.youtube.com"
 private const val BASE_MIME_TYPE = "text/html"
@@ -41,7 +36,6 @@ fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
     hostState: YouTubePlayerHostState,
-    actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
     val htmlContent: String = remember(options) {
         htmlContentProvider.provideHTMLContent()
@@ -55,7 +49,7 @@ fun YouTubePlayer(
     )
 
     val navigator = rememberWebViewNavigator()
-    val currentYouTubePlayerState = hostState.currentState
+    val command: YouTubeExecCommand? = hostState.command
     webViewState.webSettings.apply {
         isJavaScriptEnabled = true
         androidWebSettings.apply {
@@ -66,19 +60,17 @@ fun YouTubePlayer(
         }
     }
 
-    LaunchedEffect(currentYouTubePlayerState) {
-        currentYouTubePlayerState?.command?.also { command ->
+    LaunchedEffect(command) {
+        command?.also { command ->
             executeCommand(navigator, command)
-            currentYouTubePlayerState.complete()
+            hostState.complete()
         }
     }
 
-    actionListener?.also { safeListener ->
-        val action = YouTubeActionHandler.handleAction(webViewState.pageTitle)
-        if (action != null) {
-            safeListener(action)
-        }
+    YouTubeActionHandler.handleAction(webViewState.pageTitle)?.also { event ->
+        hostState.updateState(event)
     }
+
     WebView(
         modifier = modifier.fillMaxSize(),
         state = webViewState,

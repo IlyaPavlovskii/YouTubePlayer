@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
@@ -40,47 +41,34 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val youTubePlayerState = remember { YouTubePlayerHostState() }
+            val coroutineScope = rememberCoroutineScope()
+            val hostState = remember { YouTubePlayerHostState() }
             var videoDuration: String by remember { mutableStateOf("00:00") }
             var currentTime: String by remember { mutableStateOf("00:00") }
 
-            val coroutineScope = rememberCoroutineScope()
+
+            when(val state = hostState.currentState) {
+                is YouTubePlayerState.Error -> {
+                    Text(text = "Error: ${state.message}")
+                }
+                YouTubePlayerState.Idle -> {
+                    // Do nothing, waiting for initialization
+                }
+                is YouTubePlayerState.Playing -> {
+                    videoDuration = formatTime(state.duration)
+                    currentTime = formatTime(state.currentTime)
+                }
+                YouTubePlayerState.Ready -> coroutineScope.launch {
+                    hostState.loadVideo(YouTubeVideoId("ufKj1sBrC4Q"))
+                }
+            }
 
             YouTubePlayer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
                     .gesturesDisabled(),
-                hostState = youTubePlayerState,
-                actionListener = { action ->
-                    coroutineScope.launch {
-                        when (action) {
-                            YouTubeEvent.Ready -> {
-                                youTubePlayerState.executeCommand(
-                                    YouTubeExecCommand.LoadVideo(
-                                        videoId = YouTubeVideoId("ufKj1sBrC4Q"),
-                                    )
-                                )
-                            }
-
-                            is YouTubeEvent.VideoDuration -> {
-                                videoDuration = formatTime(action.duration)
-                            }
-
-                            is YouTubeEvent.TimeChanged -> {
-                                currentTime = formatTime(action.time)
-                            }
-
-                            is YouTubeEvent.OnVideoIdHandled,
-                            is YouTubeEvent.Error,
-                            is YouTubeEvent.PlaybackQualityChange,
-                            is YouTubeEvent.RateChange,
-                            is YouTubeEvent.StateChanged,
-                            -> println("webViewState. onAction HANDlED: $action")
-                        }
-                    }
-
-                },
+                hostState = hostState,
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
                     autoplay(true)
                     controls(false)
@@ -96,14 +84,10 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Play") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.Play)
-                    }
+                    coroutineScope.launch { hostState.play() }
                 }
                 SimpleButton(text = "Pause") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.Pause)
-                    }
+                    coroutineScope.launch { hostState.pause() }
                 }
             }
             Row(
@@ -112,14 +96,10 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Seek by -10s") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.SeekBy((-10).seconds))
-                    }
+                    coroutineScope.launch { hostState.seekBy((-10).seconds) }
                 }
                 SimpleButton(text = "Seek by +10s") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.SeekBy(10.seconds))
-                    }
+                    coroutineScope.launch { hostState.seekBy(10.seconds) }
                 }
             }
             Row(
@@ -128,14 +108,10 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Mute") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.Mute)
-                    }
+                    coroutineScope.launch { hostState.mute() }
                 }
                 SimpleButton(text = "Unmute") {
-                    coroutineScope.launch {
-                        youTubePlayerState.executeCommand(YouTubeExecCommand.Unmute)
-                    }
+                    coroutineScope.launch { hostState.unMute() }
                 }
             }
             Row(
