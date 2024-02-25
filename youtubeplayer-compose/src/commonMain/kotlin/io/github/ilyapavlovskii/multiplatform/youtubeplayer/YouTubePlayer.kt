@@ -33,60 +33,14 @@ private val htmlContentProvider: HTMLContentProvider = ConstantHTMLContentProvid
  * @param modifier modifier for styling component
  * @param options player options builder. See [YouTubePlayerOptionsBuilder]
  * documentation for more details.
- * @param execCommandFlow flow of commands to execute. See [YouTubeExecCommand]
+ * @param hostState host state to manage and execute commands. See [YouTubePlayerHostState]
  * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
  * */
 @Composable
 fun YouTubePlayer(
     modifier: Modifier = Modifier,
     options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
-    execCommandFlow: Flow<YouTubeExecCommand?> = emptyFlow(),
-    actionListener: ((YouTubeEvent) -> Unit)? = null,
-) = YouTubePlayer(
-    modifier = modifier,
-    options = options,
-    execCommandState = execCommandFlow
-        .distinctUntilChanged()
-        .collectAsState(initial = null),
-    actionListener = actionListener,
-)
-
-/**
- * YouTube player composable player.
- *
- * @param modifier modifier for styling component
- * @param options player options builder. See [YouTubePlayerOptionsBuilder]
- * documentation for more details.
- * @param execCommandState state of commands to execute. See [YouTubeExecCommand]
- * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
- * */
-@Composable
-fun YouTubePlayer(
-    modifier: Modifier = Modifier,
-    options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
-    execCommandState: State<YouTubeExecCommand?>,
-    actionListener: ((YouTubeEvent) -> Unit)? = null,
-) = YouTubePlayer(
-    modifier = modifier,
-    options = options,
-    execCommand = execCommandState.value,
-    actionListener = actionListener,
-)
-
-/**
- * YouTube player composable player.
- *
- * @param modifier modifier for styling component
- * @param options player options builder. See [YouTubePlayerOptionsBuilder]
- * documentation for more details.
- * @param execCommand command to execute. See [YouTubeExecCommand]
- * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
- * */
-@Composable
-fun YouTubePlayer(
-    modifier: Modifier = Modifier,
-    options: YouTubePlayerOptionsBuilder = SimpleYouTubePlayerOptionsBuilder(),
-    execCommand: YouTubeExecCommand? = null,
+    hostState: YouTubePlayerHostState,
     actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
     val htmlContent: String = remember(options) {
@@ -101,6 +55,7 @@ fun YouTubePlayer(
     )
 
     val navigator = rememberWebViewNavigator()
+    val currentYouTubePlayerState = hostState.currentState
     webViewState.webSettings.apply {
         isJavaScriptEnabled = true
         androidWebSettings.apply {
@@ -111,10 +66,12 @@ fun YouTubePlayer(
         }
     }
 
-    YouTubePlayerExecutor(
-        navigator = navigator,
-        execCommand = execCommand,
-    )
+    LaunchedEffect(currentYouTubePlayerState) {
+        currentYouTubePlayerState?.command?.also { command ->
+            executeCommand(navigator, command)
+            currentYouTubePlayerState.complete()
+        }
+    }
 
     actionListener?.also { safeListener ->
         val action = YouTubeActionHandler.handleAction(webViewState.pageTitle)
@@ -127,16 +84,6 @@ fun YouTubePlayer(
         state = webViewState,
         navigator = navigator,
     )
-}
-
-@Composable
-private fun YouTubePlayerExecutor(
-    navigator: WebViewNavigator,
-    execCommand: YouTubeExecCommand? = null,
-) {
-    LaunchedEffect(execCommand) {
-        execCommand?.also { command -> executeCommand(navigator, command) }
-    }
 }
 
 internal expect fun executeCommand(

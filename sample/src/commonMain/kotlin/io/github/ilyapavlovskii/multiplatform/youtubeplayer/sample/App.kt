@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,9 +25,11 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.SimpleYouTubePlayerOptionsBuilder
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
+import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -36,39 +40,46 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            val execCommand = mutableStateOf<YouTubeExecCommand?>(null)
+            val youTubePlayerState = remember { YouTubePlayerHostState() }
             var videoDuration: String by remember { mutableStateOf("00:00") }
             var currentTime: String by remember { mutableStateOf("00:00") }
+
+            val coroutineScope = rememberCoroutineScope()
 
             YouTubePlayer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
                     .gesturesDisabled(),
-                execCommandState = execCommand,
+                hostState = youTubePlayerState,
                 actionListener = { action ->
-                    when (action) {
-                        YouTubeEvent.Ready -> {
-                            execCommand.value = YouTubeExecCommand.LoadVideo(
-                                videoId = YouTubeVideoId("ufKj1sBrC4Q"),
-                            )
-                        }
+                    coroutineScope.launch {
+                        when (action) {
+                            YouTubeEvent.Ready -> {
+                                youTubePlayerState.executeCommand(
+                                    YouTubeExecCommand.LoadVideo(
+                                        videoId = YouTubeVideoId("ufKj1sBrC4Q"),
+                                    )
+                                )
+                            }
 
-                        is YouTubeEvent.VideoDuration -> {
-                            videoDuration = formatTime(action.duration)
-                        }
+                            is YouTubeEvent.VideoDuration -> {
+                                videoDuration = formatTime(action.duration)
+                            }
 
-                        is YouTubeEvent.TimeChanged -> {
-                            currentTime = formatTime(action.time)
-                        }
+                            is YouTubeEvent.TimeChanged -> {
+                                currentTime = formatTime(action.time)
+                            }
 
-                        is YouTubeEvent.OnVideoIdHandled,
-                        is YouTubeEvent.Error,
-                        is YouTubeEvent.PlaybackQualityChange,
-                        is YouTubeEvent.RateChange,
-                        is YouTubeEvent.StateChanged,
-                        -> println("webViewState. onAction HANDlED: $action")
+                            is YouTubeEvent.OnVideoIdHandled,
+                            is YouTubeEvent.Error,
+                            is YouTubeEvent.PlaybackQualityChange,
+                            is YouTubeEvent.RateChange,
+                            is YouTubeEvent.StateChanged,
+                            -> println("webViewState. onAction HANDlED: $action")
+                        }
                     }
+
                 },
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
                     autoplay(true)
@@ -85,10 +96,14 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Play") {
-                    execCommand.value = YouTubeExecCommand.Play
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.Play)
+                    }
                 }
                 SimpleButton(text = "Pause") {
-                    execCommand.value = YouTubeExecCommand.Pause
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.Pause)
+                    }
                 }
             }
             Row(
@@ -97,10 +112,14 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Seek by -10s") {
-                    execCommand.value = YouTubeExecCommand.SeekBy((-10).seconds)
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.SeekBy((-10).seconds))
+                    }
                 }
                 SimpleButton(text = "Seek by +10s") {
-                    execCommand.value = YouTubeExecCommand.SeekBy(10.seconds)
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.SeekBy(10.seconds))
+                    }
                 }
             }
             Row(
@@ -109,10 +128,14 @@ fun App() {
                     .height(50.dp),
             ) {
                 SimpleButton(text = "Mute") {
-                    execCommand.value = YouTubeExecCommand.Mute
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.Mute)
+                    }
                 }
                 SimpleButton(text = "Unmute") {
-                    execCommand.value = YouTubeExecCommand.Unmute
+                    coroutineScope.launch {
+                        youTubePlayerState.executeCommand(YouTubeExecCommand.Unmute)
+                    }
                 }
             }
             Row(
