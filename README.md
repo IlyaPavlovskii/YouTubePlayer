@@ -150,7 +150,7 @@ isPlaying: Boolean - is video playing
 # LICENSE
 
 ```
-Copyright 2023 Ilia Pavlovskii
+Copyright 2024 Ilia Pavlovskii
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
