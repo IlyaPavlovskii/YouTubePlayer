@@ -14,6 +14,10 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.ConstantHTMLContentProvider
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.HTMLContentProvider
+import io.github.ilyapavlovskii.`youtubeplayer-compose`.generated.resources.Res
+import io.github.ilyapavlovskii.`youtubeplayer-compose`.generated.resources.html_data
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 
 private const val BASE_URL = "https://www.youtube.com"
 private const val BASE_MIME_TYPE = "text/html"
@@ -31,6 +35,7 @@ private val htmlContentProvider: HTMLContentProvider = ConstantHTMLContentProvid
  * @param hostState host state to manage and execute commands. See [YouTubePlayerHostState]
  * @param actionListener listener for YouTube events. See [YouTubeEvent] documentation.
  * */
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun YouTubePlayer(
     modifier: Modifier = Modifier,
@@ -38,9 +43,9 @@ fun YouTubePlayer(
     hostState: YouTubePlayerHostState,
     actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
+    val htmlData = stringResource(Res.string.html_data)
     val htmlContent: String = remember(options) {
-        htmlContentProvider.provideHTMLContent()
-            .replace(PLAYER_VARS_KEY, options.build())
+        htmlData.replace(PLAYER_VARS_KEY, options.build())
     }
     val webViewState = rememberWebViewStateWithHTMLData(
         data = htmlContent,

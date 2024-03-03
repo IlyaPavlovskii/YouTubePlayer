@@ -4,13 +4,14 @@ android-versionName = "1.0.0"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
-agp = "8.1.4" #"8.3.0-alpha12"
-kotlin = "1.9.20"
-compose = "1.5.4"
-compose-compiler = "1.5.4"
-compose-material3 = "1.1.2"
-androidx-activityCompose = "1.8.0"
-uiToolingPreviewAndroid = "1.5.4"
+agp = "8.3.0"
+kotlin = "1.9.22"
+compose = "1.6.2"
+compose-compiler = "1.5.9"
+compose-plugin = "1.6.0"
+compose-material3 = "1.2.0"
+androidx-activityCompose = "1.8.2"
+uiToolingPreviewAndroid = "1.6.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -22,19 +23,20 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 org-jetbrains-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
-org-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
+org-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.5.0"
 io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.7.0"
 
 # plugin dependencies
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 toolsGradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.5.10" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.6.0" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 com-vanniktech-gradle-maven-publish-plugin = "com.vanniktech:gradle-maven-publish-plugin:0.25.3"
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }

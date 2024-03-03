@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.kotlinGradlePlugin)
     implementation(libs.toolsGradle)
     implementation(libs.composeGradlePlugin)
+    implementation(libs.composeGradlePlugin)
     implementation(libs.com.vanniktech.gradle.maven.publish.plugin)
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }
