@@ -21,10 +21,12 @@ sealed class YouTubePlayerState {
      * Idle state means that player is not initialized yet
      * */
     data object Idle : YouTubePlayerState()
+
     /**
      * Means that player is ready to play
      * */
     data object Ready : YouTubePlayerState()
+
     /**
      * Means that player is playing video.
      *
@@ -66,7 +68,9 @@ class YouTubePlayerHostState {
     internal var command by mutableStateOf<YouTubeExecCommand?>(null)
     private var continuation: CancellableContinuation<Unit>? = null
 
-    suspend fun loadVideo(videoId: YouTubeVideoId) = executeCommand(YouTubeExecCommand.LoadVideo(videoId))
+    suspend fun loadVideo(videoId: YouTubeVideoId) =
+        executeCommand(YouTubeExecCommand.LoadVideo(videoId))
+
     suspend fun play() = executeCommand(YouTubeExecCommand.Play)
     suspend fun pause() = executeCommand(YouTubeExecCommand.Pause)
     suspend fun seekTo(duration: Duration) = executeCommand(YouTubeExecCommand.SeekTo(duration))
@@ -74,7 +78,9 @@ class YouTubePlayerHostState {
     suspend fun mute() = executeCommand(YouTubeExecCommand.Mute)
     suspend fun unMute() = executeCommand(YouTubeExecCommand.Unmute)
     suspend fun setVolume(volume: Int) = executeCommand(YouTubeExecCommand.SetVolume(volume))
-    suspend fun setPlaybackRate(rate: Float) = executeCommand(YouTubeExecCommand.SetPlaybackRate(rate))
+    suspend fun setPlaybackRate(rate: Float) =
+        executeCommand(YouTubeExecCommand.SetPlaybackRate(rate))
+
     suspend fun toggleFullScreen() = executeCommand(YouTubeExecCommand.ToggleFullscreen)
 
     suspend fun executeCommand(
@@ -82,6 +88,9 @@ class YouTubePlayerHostState {
     ): Unit = mutex.withLock {
         try {
             suspendCancellableCoroutine {
+                (command as? YouTubeExecCommand.LoadVideo)?.also { loadVideo ->
+                    currentState = YouTubePlayerState.Playing(loadVideo.videoId)
+                }
                 this.continuation = it
                 this.command = command
             }
@@ -110,7 +119,11 @@ class YouTubePlayerHostState {
                 currentState
             }
 
-            YouTubeEvent.Ready -> YouTubePlayerState.Ready
+            YouTubeEvent.Ready -> when (val state = currentState) {
+                is YouTubePlayerState.Playing -> state
+                else -> YouTubePlayerState.Ready
+            }
+
             is YouTubeEvent.StateChanged -> when (val state = currentState) {
                 is YouTubePlayerState.Playing -> state.copy(
                     isPlaying = event.state == YouTubeEvent.StateChanged.State.PLAYING

@@ -46,7 +46,6 @@ fun App() {
             var videoDuration: String by remember { mutableStateOf("00:00") }
             var currentTime: String by remember { mutableStateOf("00:00") }
 
-
             when(val state = hostState.currentState) {
                 is YouTubePlayerState.Error -> {
                     Text(text = "Error: ${state.message}")
