@@ -4,13 +4,13 @@ android-versionName = "1.0.0"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
-agp = "8.1.4" #"8.3.0-alpha12"
+agp = "8.5.1"
 kotlin = "1.9.20"
-compose = "1.5.4"
+compose = "1.6.8"
 compose-compiler = "1.5.4"
-compose-material3 = "1.1.2"
-androidx-activityCompose = "1.8.0"
-uiToolingPreviewAndroid = "1.5.4"
+compose-material3 = "1.2.1"
+androidx-activityCompose = "1.9.0"
+uiToolingPreviewAndroid = "1.6.8"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -23,7 +23,7 @@ compose-foundation = { module = "androidx.compose.foundation:foundation", versio
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 org-jetbrains-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 org-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
-io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.7.0"
+io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
 
 # plugin dependencies
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

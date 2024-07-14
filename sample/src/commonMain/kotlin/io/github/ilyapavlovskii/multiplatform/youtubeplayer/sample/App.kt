@@ -31,6 +31,7 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import kotlinx.coroutines.launch
+import org.jetbrains.skia.skottie.Logger
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -49,7 +50,7 @@ fun App() {
 
             when(val state = hostState.currentState) {
                 is YouTubePlayerState.Error -> {
-                    Text(text = "Error: ${state.message}")
+                    println("Error: ${state.message}")
                 }
                 YouTubePlayerState.Idle -> {
                     // Do nothing, waiting for initialization
