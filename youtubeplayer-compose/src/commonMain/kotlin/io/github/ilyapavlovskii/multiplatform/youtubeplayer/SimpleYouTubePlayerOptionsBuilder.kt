@@ -78,7 +78,7 @@ class SimpleYouTubePlayerOptionsBuilder : YouTubePlayerOptionsBuilder {
             val playsinline: Int = 1,
 
             @SerialName(ORIGIN)
-            val origin: String = "https://www.youtube.com",
+            val origin: String = "https://www.youtube-nocookie.com",
             @SerialName(SHOW_INFO)
             val showInfo: Int = 0,
             @SerialName(MODEST_BRANDING)

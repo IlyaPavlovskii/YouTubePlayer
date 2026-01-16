@@ -15,7 +15,7 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCom
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.ConstantHTMLContentProvider
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.HTMLContentProvider
 
-private const val BASE_URL = "https://www.youtube.com"
+private const val BASE_URL = "https://www.youtube-nocookie.com"
 private const val BASE_MIME_TYPE = "text/html"
 private const val BASE_ENCODING = "utf-8"
 private const val PLAYER_VARS_KEY = "<<injectedPlayerVars>>"
