@@ -1,7 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.vanniktech.maven.publish.SonatypeHost
-
 
 plugins {
     id("com.vanniktech.maven.publish")
@@ -14,7 +12,7 @@ val versionSuffix = when (System.getenv("RELEASE")) {
 project.version = project.version.toString() + versionSuffix
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral()
 
     coordinates(
         groupId = project.group.toString(),

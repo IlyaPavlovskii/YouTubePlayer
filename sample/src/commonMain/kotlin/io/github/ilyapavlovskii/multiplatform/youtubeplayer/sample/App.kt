@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,9 @@ import kotlin.time.Duration.Companion.seconds
 fun App() {
     MaterialTheme {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val coroutineScope = rememberCoroutineScope()
@@ -70,6 +73,7 @@ fun App() {
                     rel(false)
                     ivLoadPolicy(false)
                     ccLoadPolicy(false)
+                    enableJsApi(true)
                     fullscreen = true
                 },
             )
