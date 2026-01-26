@@ -11,5 +11,5 @@ plugins {
 
 subprojects {
     group = "io.github.ilyapavlovskii"
-    version = "2024.07.14"
+    version = "2026.01.27"
 }

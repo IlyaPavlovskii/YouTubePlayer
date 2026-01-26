@@ -5,20 +5,18 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
-val versionSuffix = when (System.getenv("RELEASE")) {
-    "true" -> ""
-    else -> "-SNAPSHOT"
-}
+val versionSuffix = ""
 project.version = project.version.toString() + versionSuffix
 
 mavenPublishing {
-    publishToMavenCentral()
-
     coordinates(
         groupId = project.group.toString(),
         artifactId = project.name,
         version = project.version.toString()
     )
+
+    publishToMavenCentral()
+    signAllPublications()
 
     pom {
         name.set("YouTubePlayer")
@@ -46,7 +44,4 @@ mavenPublishing {
             developerConnection.set("scm:git:ssh://github.com/IlyaPavlovskii/YouTubePlayer.git")
         }
     }
-    // https://github.com/vanniktech/gradle-maven-publish-plugin/blob/46c85b2a306d3a3cd675f26d4b4176ad3ea477a1/docs/central.md
-    signAllPublications()
-
 }

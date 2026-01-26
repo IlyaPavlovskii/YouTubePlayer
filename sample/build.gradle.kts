@@ -2,11 +2,17 @@ plugins {
     id("multiplatform-ui-convention")
 }
 
-android {
-    namespace = "io.github.ilyapavlovskii.multiplatform.youtubeplayer.android.sample"
-}
+kotlin {
+    androidLibrary {
+        namespace = "io.github.ilyapavlovskii.multiplatform.youtubeplayer.android.sample"
+    }
 
-dependencies {
-    implementation(libs.androidx.ui.tooling.preview.android)
-    commonMainImplementation(projects.youtubeplayerCompose)
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.androidx.ui.tooling.preview.android)
+        }
+        commonMain.dependencies {
+            implementation(projects.youtubeplayerCompose)
+        }
+    }
 }

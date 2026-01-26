@@ -4,8 +4,10 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
-android {
-    namespace = "io.github.ilyapavlovskii.multiplatform.youtubeplayer"
+kotlin {
+    androidLibrary {
+        namespace = "io.github.ilyapavlovskii.multiplatform.youtubeplayer"
+    }
 }
 
 dependencies {
