@@ -1,16 +1,16 @@
 [versions]
 android-versionCode = "1"
 android-versionName = "1.0.0"
-android-compileSdk = "34"
+android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "34"
-agp = "8.5.1"
-kotlin = "1.9.20"
-compose = "1.6.8"
+android-targetSdk = "36"
+agp = "8.9.1"
+kotlin = "2.2.20"
+compose = "1.9.2"
 compose-compiler = "1.5.4"
-compose-material3 = "1.2.1"
-androidx-activityCompose = "1.9.0"
-uiToolingPreviewAndroid = "1.6.8"
+compose-material3 = "1.4.0"
+androidx-activityCompose = "1.11.0"
+uiToolingPreviewAndroid = "1.9.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -21,16 +21,17 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-org-jetbrains-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
-org-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.1"
-io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:1.9.20"
+org-jetbrains-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0"
+org-jetbrains-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.7.1"
+io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform:2.0.3"
 
 # plugin dependencies
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinComposeCompilerGradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 toolsGradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.5.10" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.7.3" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
-com-vanniktech-gradle-maven-publish-plugin = "com.vanniktech:gradle-maven-publish-plugin:0.25.3"
+com-vanniktech-gradle-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.30.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -39,3 +40,5 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.30.0" }

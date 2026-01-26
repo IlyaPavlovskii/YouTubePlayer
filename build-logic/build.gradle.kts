@@ -10,6 +10,7 @@ plugins {
 
 dependencies {
     implementation(libs.kotlinGradlePlugin)
+    implementation(libs.kotlinComposeCompilerGradlePlugin)
     implementation(libs.toolsGradle)
     implementation(libs.composeGradlePlugin)
     implementation(libs.com.vanniktech.gradle.maven.publish.plugin)

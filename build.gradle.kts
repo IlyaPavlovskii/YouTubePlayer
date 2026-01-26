@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.kotlinAndroid).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.kotlinSerialization).apply(false)
+    alias(libs.plugins.kotlinCompose).apply(false)
+    alias(libs.plugins.vanniktech.maven.publish).apply(false)
 }
 
 subprojects {

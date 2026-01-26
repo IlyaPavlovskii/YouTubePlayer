@@ -1,5 +1,4 @@
 import org.gradle.accessors.dm.LibrariesForLibs
-import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 val libs = the<LibrariesForLibs>()
@@ -9,16 +8,12 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("plugin.compose")
 }
 
 kotlin {
     androidTarget {
         publishLibraryVariants("release")
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
-        }
     }
     listOf(
         iosX64(),
@@ -29,6 +24,9 @@ kotlin {
             baseName = project.name
             isStatic = true
         }
+        iosTarget.binaries.all {
+            freeCompilerArgs += listOf("-Xbinary=targetIosVersion=17.2")
+        }
     }
 
     cocoapods {
@@ -37,6 +35,8 @@ kotlin {
         version = "1.0"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
+
+        ios.deploymentTarget = "17.2"
 
         // Optional properties
         // Configure the Pod name here instead of changing the Gradle project name
@@ -54,7 +54,7 @@ kotlin {
             //            export(project(":anotherKMMModule"))
             //            transitiveExport = false // This is default.
             // Bitcode embedding
-            embedBitcode(BitcodeEmbeddingMode.BITCODE)
+            //embedBitcode(BitcodeEmbeddingMode.BITCODE)
         }
 
         // Maps custom Xcode configuration to NativeBuildType

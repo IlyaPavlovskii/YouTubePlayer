@@ -2,14 +2,11 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer.sample
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,10 +25,7 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayer
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
-import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
-import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import kotlinx.coroutines.launch
-import org.jetbrains.skia.skottie.Logger
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -67,11 +61,11 @@ fun App() {
             YouTubePlayer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
-                    .gesturesDisabled(),
+                    .height(300.dp),
                 hostState = hostState,
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
                     autoplay(true)
+                    mute(true)
                     controls(false)
                     rel(false)
                     ivLoadPolicy(false)
