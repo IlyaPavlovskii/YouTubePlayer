@@ -1,8 +1,8 @@
 # YouTubePlayer
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.ilyapavlovskii/youtubeplayer-compose.svg)](https://central.sonatype.com/artifact/io.github.ilyapavlovskii/youtubeplayer-compose)
-[![Kotlin](https://img.shields.io/badge/kotlin-v1.9.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v1.5.4-blue)](https://github.com/JetBrains/compose-multiplatform)
+[![Kotlin](https://img.shields.io/badge/kotlin-v2.3.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-v8.13.2-blue)](https://github.com/JetBrains/compose-multiplatform)
 
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
@@ -72,6 +72,7 @@ YouTubePlayer(
     hostState = hostState,
     options = SimpleYouTubePlayerOptionsBuilder.builder {
         autoplay(true)
+        mute(true) // autoplay works only with mute for mobile devices
         controls(false)
         rel(false)
         ivLoadPolicy(false)
@@ -150,7 +151,7 @@ isPlaying: Boolean - is video playing
 # LICENSE
 
 ```
-Copyright 2024 Ilia Pavlovskii
+Copyright 2026 Ilia Pavlovskii
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

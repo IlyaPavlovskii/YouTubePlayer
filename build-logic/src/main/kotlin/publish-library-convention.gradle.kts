@@ -15,7 +15,7 @@ mavenPublishing {
         version = project.version.toString()
     )
 
-    publishToMavenCentral()
+    publishToMavenCentral(automaticRelease = true)
     signAllPublications()
 
     pom {
