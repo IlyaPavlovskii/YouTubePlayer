@@ -111,12 +111,23 @@ class YouTubePlayerHostState {
             }
 
             YouTubeEvent.Ready -> YouTubePlayerState.Ready
-            is YouTubeEvent.StateChanged -> when (val state = currentState) {
-                is YouTubePlayerState.Playing -> state.copy(
-                    isPlaying = event.state == YouTubeEvent.StateChanged.State.PLAYING
-                )
-
-                else -> YouTubePlayerState.Error("Incorrect player state. Expected Playing, but was $state")
+            is YouTubeEvent.StateChanged -> {
+                println("YOU_TUBE_EVENT_event: ${event.state}")
+                when (val state = currentState) {
+                    is YouTubePlayerState.Playing -> state.copy(
+                        isPlaying = when(event.state) {
+                            YouTubeEvent.StateChanged.State.UNSTARTED,
+                            YouTubeEvent.StateChanged.State.ENDED,
+                            YouTubeEvent.StateChanged.State.PAUSED,
+                            -> false
+                            YouTubeEvent.StateChanged.State.PLAYING,
+                            YouTubeEvent.StateChanged.State.BUFFERING,
+                            YouTubeEvent.StateChanged.State.CUED,
+                            -> true
+                        }
+                    )
+                    else -> YouTubePlayerState.Error("Incorrect player state. Expected Playing, but was $state")
+                }
             }
 
             is YouTubeEvent.TimeChanged -> when (val state = currentState) {
