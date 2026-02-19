@@ -58,6 +58,7 @@ fun YouTubePlayer(
             safeBrowsingEnabled = false
             domStorageEnabled = true
             supportZoom = false
+            mediaPlaybackRequiresUserGesture = false
         }
     }
 
