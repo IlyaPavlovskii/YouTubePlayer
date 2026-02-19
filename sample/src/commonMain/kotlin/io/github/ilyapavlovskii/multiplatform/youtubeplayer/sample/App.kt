@@ -68,7 +68,7 @@ fun App() {
                 hostState = hostState,
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
                     autoplay(true)
-                    mute(true)
+                    mute(false)
                     controls(false)
                     rel(false)
                     ivLoadPolicy(false)

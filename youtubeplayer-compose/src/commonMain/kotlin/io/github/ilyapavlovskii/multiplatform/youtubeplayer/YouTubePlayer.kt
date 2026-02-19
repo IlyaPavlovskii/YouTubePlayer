@@ -53,11 +53,16 @@ fun YouTubePlayer(
     val command: YouTubeExecCommand? = hostState.command
     webViewState.webSettings.apply {
         isJavaScriptEnabled = true
+        iOSWebSettings.apply {
+            supportZoom = false
+            mediaPlaybackRequiresUserGesture = false
+        }
         androidWebSettings.apply {
             isAlgorithmicDarkeningAllowed = true
             safeBrowsingEnabled = false
             domStorageEnabled = true
             supportZoom = false
+            mediaPlaybackRequiresUserGesture = false
         }
     }
 
