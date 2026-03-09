@@ -97,7 +97,7 @@ class YouTubePlayerHostState {
     }
 
     internal fun updateState(event: YouTubeEvent) {
-        val state = when (event) {
+        val newState = when (event) {
             is YouTubeEvent.Error -> YouTubePlayerState.Error(event.error)
             is YouTubeEvent.OnVideoIdHandled -> YouTubePlayerState.Playing(event.videoId)
             is YouTubeEvent.PlaybackQualityChange -> when (val state = currentState) {
@@ -112,7 +112,6 @@ class YouTubePlayerHostState {
 
             YouTubeEvent.Ready -> YouTubePlayerState.Ready
             is YouTubeEvent.StateChanged -> {
-                println("YOU_TUBE_EVENT_event: ${event.state}")
                 when (val state = currentState) {
                     is YouTubePlayerState.Playing -> state.copy(
                         isPlaying = when(event.state) {
@@ -146,6 +145,6 @@ class YouTubePlayerHostState {
                 else -> YouTubePlayerState.Error("Incorrect player state. Expected Playing, but was $state")
             }
         }
-        currentState = state
+        currentState = newState
     }
 }
