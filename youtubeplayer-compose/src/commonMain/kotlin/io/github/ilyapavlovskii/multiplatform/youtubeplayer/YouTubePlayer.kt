@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.multiplatform.webview.web.PlatformWebViewParams
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.WebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewNavigator
@@ -88,6 +89,7 @@ fun YouTubePlayer(
         modifier = modifier.fillMaxSize(),
         state = webViewState,
         navigator = navigator,
+        platformWebViewParams = rememberYouTubePlatformWebViewParams(),
     )
 }
 
@@ -95,3 +97,6 @@ internal expect fun executeCommand(
     navigator: WebViewNavigator,
     execCommand: YouTubeExecCommand,
 )
+
+@Composable
+internal expect fun rememberYouTubePlatformWebViewParams(): PlatformWebViewParams?

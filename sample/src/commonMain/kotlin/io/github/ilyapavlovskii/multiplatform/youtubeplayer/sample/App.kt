@@ -2,6 +2,7 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer.sample
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -69,7 +70,8 @@ fun App() {
                 options = SimpleYouTubePlayerOptionsBuilder.builder {
                     autoplay(true)
                     mute(false)
-                    controls(false)
+                    controls(true)
+                    fullscreen(true)
                     rel(false)
                     ivLoadPolicy(false)
                     ccLoadPolicy(false)
@@ -113,6 +115,19 @@ fun App() {
                     coroutineScope.launch { hostState.unMute() }
                 }
             }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+            ) {
+                SimpleButton(text = "Fullscreen") {
+                    coroutineScope.launch { hostState.toggleFullScreen() }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
             ) {

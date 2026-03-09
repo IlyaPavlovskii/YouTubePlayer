@@ -1,5 +1,7 @@
 package io.github.ilyapavlovskii.multiplatform.youtubeplayer
 
+import androidx.compose.runtime.Composable
+import com.multiplatform.webview.web.PlatformWebViewParams
 import com.multiplatform.webview.web.WebViewNavigator
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 
@@ -9,3 +11,6 @@ internal actual fun executeCommand(
 ) {
     navigator.evaluateJavaScript(execCommand.command())
 }
+
+@Composable
+internal actual fun rememberYouTubePlatformWebViewParams(): PlatformWebViewParams? = null
