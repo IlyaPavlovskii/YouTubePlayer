@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "io.github.ilyapavlovskii.multiplatform.youtubeplayer.android.sample"
     }
 

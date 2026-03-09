@@ -4,13 +4,13 @@ android-versionName = "1.0.0"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "36"
-agp = "8.13.2"
-kotlin = "2.3.0"
-compose = "1.10.1"
+agp = "9.1.0"
+kotlin = "2.3.10"
+compose = "1.10.4"
 compose-compiler = "1.5.4"
 compose-material3 = "1.4.0"
-androidx-activityCompose = "1.12.2"
-uiToolingPreviewAndroid = "1.10.1"
+androidx-activityCompose = "1.12.4"
+uiToolingPreviewAndroid = "1.10.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -29,7 +29,7 @@ io-github-kevinnzou-webview = "io.github.kevinnzou:compose-webview-multiplatform
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlinComposeCompilerGradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 toolsGradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.10.0" }
+composeGradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version = "1.10.2" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 com-vanniktech-gradle-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.36.0" }
 

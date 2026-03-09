@@ -4,7 +4,6 @@ val libs = the<LibrariesForLibs>()
 
 plugins {
     id("com.android.application")
-    kotlin("android")
 }
 
 android {
