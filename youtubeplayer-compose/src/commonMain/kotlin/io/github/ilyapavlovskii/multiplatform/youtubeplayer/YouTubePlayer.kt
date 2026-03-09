@@ -3,7 +3,10 @@ package io.github.ilyapavlovskii.multiplatform.youtubeplayer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.WebViewNavigator
@@ -12,15 +15,15 @@ import com.multiplatform.webview.web.rememberWebViewStateWithHTMLData
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.handler.YouTubeActionHandler
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
-import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.ConstantHTMLContentProvider
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.HTMLContentProvider
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider.ResourceHTMLContentProvider
 
 private const val BASE_URL = "https://www.youtube-nocookie.com"
 private const val BASE_MIME_TYPE = "text/html"
 private const val BASE_ENCODING = "utf-8"
 private const val PLAYER_VARS_KEY = "<<injectedPlayerVars>>"
 
-private val htmlContentProvider: HTMLContentProvider = ConstantHTMLContentProvider()
+private val htmlContentProvider: HTMLContentProvider = ResourceHTMLContentProvider()
 
 /**
  * YouTube player composable player.
@@ -38,9 +41,12 @@ fun YouTubePlayer(
     hostState: YouTubePlayerHostState,
     actionListener: ((YouTubeEvent) -> Unit)? = null,
 ) {
-    val htmlContent: String = remember(options) {
-        htmlContentProvider.provideHTMLContent()
-            .replace(PLAYER_VARS_KEY, options.build())
+    var rawHtml by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) {
+        rawHtml = htmlContentProvider.provideHTMLContent()
+    }
+    val htmlContent = remember(rawHtml, options) {
+        rawHtml.replace(PLAYER_VARS_KEY, options.build())
     }
     val webViewState = rememberWebViewStateWithHTMLData(
         data = htmlContent,

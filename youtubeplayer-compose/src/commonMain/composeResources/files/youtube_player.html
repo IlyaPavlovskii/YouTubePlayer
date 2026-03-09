@@ -1,12 +1,3 @@
-package io.github.ilyapavlovskii.multiplatform.youtubeplayer.provider
-
-@Deprecated("No need to hardcode text inside class use ResourceHTMLContentProvider")
-internal class ConstantHTMLContentProvider : HTMLContentProvider {
-
-    override suspend fun provideHTMLContent(): String = HTML_CONTENT.trimIndent()
-
-    private companion object {
-        const val HTML_CONTENT = """
 <!DOCTYPE html>
 <html>
 <style type="text/css">
@@ -52,7 +43,7 @@ function onYouTubeIframeAPIReady() {
 
     height: '100%',
     width: '100%',
-    
+
     events: {
         onReady: function(event) {
              document.title = 'ytplayer://onReady';
@@ -70,7 +61,7 @@ function onYouTubeIframeAPIReady() {
             document.title = 'ytplayer://onError?data='+event.data;
         }
       },
-      
+
       playerVars: <<injectedPlayerVars>>
   });
 }
@@ -201,6 +192,3 @@ function setShuffle(shuffle) {
 }
   </script>
 </html>
-        """
-    }
-}
