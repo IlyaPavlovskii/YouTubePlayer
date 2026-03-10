@@ -13,7 +13,12 @@ internal actual fun executeCommand(
     navigator: WebViewNavigator,
     execCommand: YouTubeExecCommand
 ) {
-    navigator.evaluateJavaScript(execCommand.command())
+    val command = if (execCommand is YouTubeExecCommand.ToggleFullscreen) {
+        "toggleFullscreenIOS();"
+    } else {
+        execCommand.command()
+    }
+    navigator.evaluateJavaScript(command)
 }
 
 @OptIn(ExperimentalForeignApi::class)
