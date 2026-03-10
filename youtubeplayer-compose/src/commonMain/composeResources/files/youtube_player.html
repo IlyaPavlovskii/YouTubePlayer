@@ -168,7 +168,26 @@ function setPlaybackRate(playbackRate) {
 }
 
 function toggleFullscreen() {
-  player.toggleFullscreen();
+  var iframe = player.getIframe();
+
+  // Android: use the standard Fullscreen API, which triggers
+  // WebChromeClient.onShowCustomView / onHideCustomView.
+  var requestFS = iframe.requestFullscreen || iframe.webkitRequestFullscreen;
+  if (requestFS) {
+    var fsElement = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fsElement) {
+      var exitFS = document.exitFullscreen || document.webkitExitFullscreen;
+      if (exitFS) exitFS.call(document);
+    } else {
+      requestFS.call(iframe);
+    }
+    return;
+  }
+
+  // iOS WKWebView: requestFullscreen is not supported on iframes.
+  // A WKUserScript injected with forMainFrameOnly=false listens for this
+  // message inside the YouTube iframe and calls webkitEnterFullscreen().
+  iframe.contentWindow.postMessage('ytplayer://toggleFullscreen', '*');
 }
 
 function nextVideo() {
