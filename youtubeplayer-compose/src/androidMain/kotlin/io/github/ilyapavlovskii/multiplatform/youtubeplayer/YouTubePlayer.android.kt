@@ -10,7 +10,12 @@ internal actual fun executeCommand(
     navigator: WebViewNavigator,
     execCommand: YouTubeExecCommand
 ) {
-    navigator.loadUrl(COMMAND_EXECUTOR_PATTERN.format(execCommand.command()))
+    val command = if (execCommand is YouTubeExecCommand.ToggleFullscreen) {
+        "toggleFullscreenAndroid();"
+    } else {
+        execCommand.command()
+    }
+    navigator.loadUrl(COMMAND_EXECUTOR_PATTERN.format(command))
 }
 
 internal actual fun configureYouTubeWebView(webView: NativeWebView) {
