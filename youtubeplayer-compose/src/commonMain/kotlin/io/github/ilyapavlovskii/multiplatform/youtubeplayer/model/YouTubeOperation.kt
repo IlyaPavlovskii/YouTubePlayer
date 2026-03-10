@@ -8,7 +8,8 @@ internal enum class YouTubeOperation(val operationName: String) {
     VIDEO_DURATION("onVideoDuration"),
     STATE_CHANGE("onStateChange"),
     CURRENT_TIME_CHANGE("onCurrentTimeChange"),
-    ON_VIDEO_ID_HANDLED("onVideoId")
+    ON_VIDEO_ID_HANDLED("onVideoId"),
+    FULLSCREEN_CHANGE("onFullscreenChange")
     ;
 
     companion object {

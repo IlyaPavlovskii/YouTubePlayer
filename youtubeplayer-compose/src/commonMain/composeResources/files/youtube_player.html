@@ -35,6 +35,14 @@ var CUED = "CUED";
 var player;
 var timerId;
 
+document.addEventListener('fullscreenchange', onFullscreenChange);
+document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+
+function onFullscreenChange() {
+  var isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  document.title = 'ytplayer://onFullscreenChange?data=' + isFullscreen;
+}
+
 function onYouTubeIframeAPIReady() {
 
   document.title = 'ytplayer://onYouTubeIframeAPIReady';

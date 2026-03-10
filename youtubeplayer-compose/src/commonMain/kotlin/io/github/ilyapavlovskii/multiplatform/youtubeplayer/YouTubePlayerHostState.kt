@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState.*
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import kotlinx.coroutines.CancellableContinuation
@@ -105,6 +106,7 @@ class YouTubePlayerHostState {
                 else -> YouTubePlayerState.Error("Incorrect player state. Expected Playing, but was $state")
             }
 
+            is YouTubeEvent.FullscreenChanged,
             is YouTubeEvent.RateChange -> {
                 // Do nothing
                 currentState

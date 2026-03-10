@@ -91,6 +91,15 @@ sealed class YouTubeEvent {
         }
     }
 
+    data class FullscreenChanged(
+        val isFullscreen: Boolean,
+    ) : YouTubeEvent() {
+        companion object {
+            fun fromStringOrNull(value: String): FullscreenChanged? =
+                value.toBooleanStrictOrNull()?.let(::FullscreenChanged)
+        }
+    }
+
     companion object {
         internal fun fromStringOrNull(
             operation: YouTubeOperation?,
@@ -104,6 +113,7 @@ sealed class YouTubeEvent {
             YouTubeOperation.STATE_CHANGE -> StateChanged.fromStringOrNull(data)
             YouTubeOperation.CURRENT_TIME_CHANGE -> TimeChanged.fromStringOrNull(data)
             YouTubeOperation.ON_VIDEO_ID_HANDLED -> OnVideoIdHandled.fromStringOrNull(data)
+            YouTubeOperation.FULLSCREEN_CHANGE -> FullscreenChanged.fromStringOrNull(data)
             null -> null
         }
     }
