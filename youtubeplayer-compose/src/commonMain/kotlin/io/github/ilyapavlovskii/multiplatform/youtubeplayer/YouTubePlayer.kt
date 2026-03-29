@@ -76,7 +76,7 @@ fun YouTubePlayer(
 
     LaunchedEffect(command) {
         command?.also { command ->
-            executeCommand(navigator, command)
+            executeCommand(navigator, command, hostState)
             hostState.complete()
         }
     }
@@ -98,6 +98,7 @@ fun YouTubePlayer(
 internal expect fun executeCommand(
     navigator: WebViewNavigator,
     execCommand: YouTubeExecCommand,
+    hostState: YouTubePlayerHostState,
 )
 
 internal expect fun configureYouTubeWebView(webView: NativeWebView)
