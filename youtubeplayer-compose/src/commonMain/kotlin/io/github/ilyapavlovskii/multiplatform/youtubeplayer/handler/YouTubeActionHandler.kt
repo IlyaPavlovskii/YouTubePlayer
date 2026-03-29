@@ -12,8 +12,6 @@ object YouTubeActionHandler {
         return result?.let { matchResult ->
             val operation = matchResult.groupValues[1].let(YouTubeOperation.Companion::fromStringOrNull)
             val data = matchResult.groupValues[3]
-            println("webViewState. OPERATION_HANDLED: Path: $url " +
-                    "Operation: $operation Data: $data")
             YouTubeEvent.fromStringOrNull(operation, data)
         }
     }

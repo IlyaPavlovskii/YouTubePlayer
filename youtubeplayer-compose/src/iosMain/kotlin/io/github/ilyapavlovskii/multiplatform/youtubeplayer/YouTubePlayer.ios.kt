@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import com.multiplatform.webview.web.NativeWebView
 import com.multiplatform.webview.web.PlatformWebViewParams
 import com.multiplatform.webview.web.WebViewNavigator
-import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.WebKit.WKUserScript
@@ -17,7 +16,7 @@ internal actual fun executeCommand(
 ) {
     when (execCommand) {
         is YouTubeExecCommand.SetVolume ->
-            hostState.updateState(YouTubeEvent.Error("setVolume is not supported on iOS"))
+            hostState.emitCommandError("setVolume is not supported on iOS")
         is YouTubeExecCommand.ToggleFullscreen ->
             navigator.evaluateJavaScript("toggleFullscreenIOS();")
         else ->

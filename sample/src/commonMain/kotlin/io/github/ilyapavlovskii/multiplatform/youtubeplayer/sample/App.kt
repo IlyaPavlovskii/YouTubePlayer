@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,11 @@ fun App() {
             var currentTime: String by remember { mutableStateOf("00:00") }
             var volume: Int by remember { mutableStateOf(100) }
 
+            LaunchedEffect(hostState) {
+                hostState.commandError.collect { error ->
+                    println("Command error: $error")
+                }
+            }
 
             when(val state = hostState.currentState) {
                 is YouTubePlayerState.Error -> {
