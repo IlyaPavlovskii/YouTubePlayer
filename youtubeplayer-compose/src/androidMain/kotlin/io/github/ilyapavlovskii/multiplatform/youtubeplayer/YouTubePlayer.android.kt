@@ -8,7 +8,8 @@ private const val COMMAND_EXECUTOR_PATTERN = "javascript:%s"
 
 internal actual fun executeCommand(
     navigator: WebViewNavigator,
-    execCommand: YouTubeExecCommand
+    execCommand: YouTubeExecCommand,
+    hostState: YouTubePlayerHostState,
 ) {
     val command = if (execCommand is YouTubeExecCommand.ToggleFullscreen) {
         "toggleFullscreenAndroid();"

@@ -169,19 +169,3 @@ private fun formatTime(duration: Duration): String {
     val minutes = seconds / 60
     return "${minutes % 60}:${seconds % 60}"
 }
-
-fun Modifier.gesturesDisabled(disabled: Boolean = true) =
-    if (disabled) {
-        pointerInput(Unit) {
-            awaitPointerEventScope {
-                // we should wait for all new pointer events
-                while (true) {
-                    awaitPointerEvent(pass = PointerEventPass.Initial)
-                        .changes
-                        .forEach(PointerInputChange::consume)
-                }
-            }
-        }
-    } else {
-        this
-    }
