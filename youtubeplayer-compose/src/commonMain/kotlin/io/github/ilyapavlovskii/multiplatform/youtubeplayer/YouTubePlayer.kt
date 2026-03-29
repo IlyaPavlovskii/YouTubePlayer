@@ -81,9 +81,12 @@ fun YouTubePlayer(
         }
     }
 
-    YouTubeActionHandler.handleAction(webViewState.pageTitle)?.also { event ->
-        hostState.updateState(event)
-        actionListener?.invoke(event)
+    LaunchedEffect(webViewState.pageTitle) {
+        YouTubeActionHandler.handleAction(webViewState.pageTitle)?.also { event ->
+            println("webViewState. OPERATION_HANDLED: event: $event")
+            hostState.updateState(event)
+            actionListener?.invoke(event)
+        }
     }
 
     WebView(

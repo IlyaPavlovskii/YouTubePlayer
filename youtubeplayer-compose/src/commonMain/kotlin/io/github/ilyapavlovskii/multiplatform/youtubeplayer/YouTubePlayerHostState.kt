@@ -8,6 +8,9 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState.*
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeEvent
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.model.YouTubeExecCommand
 import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -64,6 +67,9 @@ class YouTubePlayerHostState {
     var currentState by mutableStateOf<YouTubePlayerState>(YouTubePlayerState.Idle)
         private set
 
+    private val _commandError = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    val commandError: SharedFlow<String> = _commandError.asSharedFlow()
+
     internal var command by mutableStateOf<YouTubeExecCommand?>(null)
     private var continuation: CancellableContinuation<Unit>? = null
 
@@ -95,6 +101,10 @@ class YouTubePlayerHostState {
 
     internal fun complete() {
         continuation?.resume(Unit)
+    }
+
+    internal fun emitCommandError(message: String) {
+        _commandError.tryEmit(message)
     }
 
     internal fun updateState(event: YouTubeEvent) {
