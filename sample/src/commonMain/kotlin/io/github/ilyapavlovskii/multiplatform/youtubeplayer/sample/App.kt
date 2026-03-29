@@ -44,6 +44,7 @@ fun App() {
             val hostState = remember { YouTubePlayerHostState() }
             var videoDuration: String by remember { mutableStateOf("00:00") }
             var currentTime: String by remember { mutableStateOf("00:00") }
+            var volume: Int by remember { mutableStateOf(100) }
 
 
             when(val state = hostState.currentState) {
@@ -113,6 +114,21 @@ fun App() {
                 }
                 SimpleButton(text = "Unmute") {
                     coroutineScope.launch { hostState.unMute() }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+            ) {
+                SimpleButton(text = "Vol -") {
+                    volume = (volume - 10).coerceAtLeast(0)
+                    coroutineScope.launch { hostState.setVolume(volume) }
+                }
+                SimpleButton(text = "Vol +") {
+                    volume = (volume + 10).coerceAtMost(100)
+                    coroutineScope.launch { hostState.setVolume(volume) }
                 }
             }
 
