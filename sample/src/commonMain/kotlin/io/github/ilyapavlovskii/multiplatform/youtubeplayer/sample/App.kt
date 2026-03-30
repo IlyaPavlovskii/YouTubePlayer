@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,6 +40,9 @@ import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerHostSta
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubePlayerState
 import io.github.ilyapavlovskii.multiplatform.youtubeplayer.YouTubeVideoId
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -54,10 +61,15 @@ fun App() {
             var videoDuration: String by remember { mutableStateOf("00:00") }
             var currentTime: String by remember { mutableStateOf("00:00") }
             var volume: Int by remember { mutableStateOf(100) }
+            val errorLog = remember { mutableStateListOf<Pair<String, String>>() }
 
             LaunchedEffect(hostState) {
                 hostState.commandError.collect { error ->
-                    println("Command error: $error")
+                    val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                    val timestamp = "${now.hour.toString().padStart(2, '0')}:" +
+                        "${now.minute.toString().padStart(2, '0')}:" +
+                        "${now.second.toString().padStart(2, '0')}"
+                    errorLog.add(0, timestamp to error)
                 }
             }
 
@@ -93,6 +105,7 @@ fun App() {
                 },
             )
 
+            // Remote control body
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -200,6 +213,50 @@ fun App() {
                         color = Color(0xFF888888),
                         fontSize = 13.sp,
                     )
+                }
+            }
+
+            // Error log
+            if (errorLog.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFF1C1C1C))
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = "Errors",
+                        color = Color(0xFFFF6B6B),
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 4.dp),
+                    )
+                    LazyColumn(modifier = Modifier.heightIn(max = (5 * 28).dp)) {
+                        items(errorLog) { (timestamp, message) ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(28.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    text = timestamp,
+                                    color = Color(0xFF888888),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Medium,
+                                )
+                                Text(
+                                    text = message,
+                                    color = Color(0xFFFF6B6B),
+                                    fontSize = 11.sp,
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

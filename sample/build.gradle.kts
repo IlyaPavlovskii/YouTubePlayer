@@ -13,6 +13,7 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(projects.youtubeplayerCompose)
+            implementation(libs.org.jetbrains.kotlinx.datetime)
         }
     }
 }
